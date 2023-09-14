@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/vue-map-maker/',
+  base: '/vue-map-builder/',
   plugins: [vue()],
   resolve: {
     alias: [
