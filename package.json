@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
+    "@shopify/draggable": "^1.0.0-beta.8",
     "vue": "^3.3.4"
   },
   "devDependencies": {

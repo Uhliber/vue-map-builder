@@ -1,7 +1,7 @@
 <template>
  <svg
     ref="mapAsset"
-    class="absolute min-h-full min-w-full transition-opacity"
+    class="map-container absolute min-h-full min-w-full transition-opacity"
     :class="[{ 'opacity-0': isAnalyzingMap, 'w-full h-auto': fullWidthMode, 'w-auto h-full': fullHeightMode }]"
     width="100%"
     height="100%"
@@ -9,7 +9,28 @@
     version="1.1"
   >
     <template v-if="mapUrl">
+      <foreignObject
+        v-if="mapIsVideo"
+        x="0"
+        y="0"
+        height="1080px"
+        width="1920px"
+      >
+        <video
+          class="w-full h-full"
+          autoplay
+          loop
+          muted
+        >
+          <source
+            :src="mapUrl"
+            type="video/mp4"
+          >
+        </video>
+      </foreignObject>
+
       <image
+        v-else
         :href="mapUrl"
         class="w-full h-full"
         x="0"
@@ -21,27 +42,35 @@
 
     <rect
       ref="rectAsset"
+      class="dropzone"
       width="100%"
       height="100%"
       x="0"
       y="0"
       fill="transparent"
     />
-    
-    <a>
-      <image x="1000" y="500" :xlink:href="`/src/assets/images/SVG/Totem.svg`" />
-    </a>
 
-    <a>
-      <image x="830" y="130" :xlink:href="`/src/assets/images/SVG/Hut.svg`" />
+    <a 
+      v-for="pointer in pointers"
+      :key="pointer.key"
+      class="dropzone"
+    >
+      <image
+        class="draggable"
+        :data-key="pointer.key"
+        :x="pointer.x"
+        :y="pointer.y"
+        :xlink:href="pointer.image"
+      />
     </a>
   </svg>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
+import { ref, onMounted, onBeforeUnmount, nextTick, computed } from "vue";
+import { Droppable, Sensors } from '@shopify/draggable';
 
-defineProps({
+const props = defineProps({
   mapUrl: {
     type: String,
     default: null,
@@ -53,11 +82,69 @@ const rectAsset = ref(null);
 const fullWidthMode = ref(true);
 const fullHeightMode = ref(false);
 const isAnalyzingMap = ref(true);
+
+const mapIsVideo = computed(() => {
+  return ['mp4', 'mov'].includes(props.mapUrl?.split('.').pop() ?? null);
+})
+
+const pointers = ref([
+  {
+    key: 'dot-active',
+    x: 1000,
+    y: 500,
+    image: '/src/assets/images/SVG/Dot-Active.svg',
+  },
+  {
+    key: 'dot-check',
+    x: 830,
+    y: 130,
+    image: '/src/assets/images/SVG/Dot-Check.svg',
+  },
+  {
+    key: 'dot-disabled',
+    x: 400,
+    y: 450,
+    image: '/src/assets/images/SVG/Dot-Disabled.svg',
+  }
+])
 let resizeTimer;
 
 onMounted(() => {
   window.addEventListener("resize", checkForOverflow);
   mapAsset.value.addEventListener("load", checkForOverflow);
+
+  const draggable = new Droppable(document.querySelectorAll('.map-container'), {
+    draggable: '.draggable',
+    dropzone: '.dropzone',
+    sensors: [ Sensors.DragSensor ],
+  });
+
+  draggable.on('drag:start', (event) => {
+    console.log(event);
+  });
+
+  draggable.on('drag:move', (event) => {
+    console.log(event);
+  });
+
+  draggable.on('drag:stop', (event) => {
+    console.log(event);
+  });
+
+  draggable.on('droppable:start', (event) => {
+    console.log(event);
+    console.log(event.dropzone.getBoundingClientRect());
+  });
+
+  draggable.on('droppable:return', (event) => {
+    console.log(event);
+    console.log(event.dropzone.getBoundingClientRect());
+  });
+
+  draggable.on('droppable:dropped', (event) => {
+    console.log(event);
+    console.log(event.dropzone.getBoundingClientRect());
+  });
 });
 
 onBeforeUnmount(() => {
