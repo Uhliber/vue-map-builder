@@ -6,6 +6,4 @@
 <script setup>
   import PointersPanel from './components/PointersPanel.vue';
   import MapElement from './components/MapElement.vue';
-
-  // test comment
 </script>
