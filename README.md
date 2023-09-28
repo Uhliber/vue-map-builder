@@ -1,5 +1,10 @@
-# vue-map-builder
+# Vue Map Builder
+**(WIP)** Vue Map Builder using Vue 3 + Tailwind CSS + Draggable.js
+This will allow the users to customize their map by adding their own map pointers and dropping it in the map.
 
-## Recommended IDE Setup
+Features Includes:
+- Draggable map pointers
+- Responsive map
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+*Demo coming soon!*
