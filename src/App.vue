@@ -1,6 +1,6 @@
 <template>
   <PointersPanel />
-  <MapElement :map-url="`/src/assets/base-map-video.mp4`"/>
+  <MapElement :map-url="`/src/assets/images/base-map.jpg`"/>
 </template>
 
 <script setup>
